@@ -1,4 +1,4 @@
-/*import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 
 export default function Calender() {
     return (
@@ -15,4 +15,4 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: '#1aa'
     }
-});*/
+});
