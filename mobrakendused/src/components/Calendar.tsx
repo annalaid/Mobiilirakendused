@@ -15,20 +15,20 @@ type Day = {
 const entryList: Entry[] = [
     {
         title: "Kristjan Jõekalda Loto kolmapäev",
-        time: new Date("2022.05.07 19:00")
+        time: new Date("2022-05-07 19:00")
     },
     {
         title: "Homework: Inglisekeele ül. 1",
-        time: new Date("2022.05.07"),
+        time: new Date("2022-05-07"),
         allDay: true
     },
     {
         title: "Kokkusaamine Teet Kääpaga",
-        time: new Date("2022.05.11 16:15")
+        time: new Date("2022-05-11 16:15")
     },
     {
         title: "Homework: Inglisekeele ül. 2",
-        time: new Date("2022.05.12 16:15")
+        time: new Date("2022-05-12 16:15")
     }
 ];
 
@@ -64,11 +64,14 @@ export default function Calender() {
                     d.getMonth() === e.getMonth() &&
                     d.getDate() === e.getDate()) {
                     day.entryList.push(entry)
+                    
                 }
             });
         });
 
         setDayList(dayList);
+
+        console.log(entryList)
     }, [currentDate]);
 
 

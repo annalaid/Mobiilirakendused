@@ -3,20 +3,21 @@ import { StyleSheet, Text, View, TextInput, Button } from 'react-native';
 import './StyleHF.css';
 import SQLite from 'react-native-sqlite-storage';
 
+const db = SQLite.openDatabase(
+    {
+        name:'MainDB',
+        location:'default'
+    }, 
+    () => {},
+    error => { console.log(error) }
+)
 
-export default function Today() {
+
+
+export default function New() {
     const [title, setTitle] = useState<any | null>(null);
     const [date, setDate] = useState<any | null>(null);
     const [time, setTime] = useState<any | null>(null);
-
-    const db = SQLite.openDatabase(
-        {
-            name:'MainDB',
-            location:'default',
-        }, 
-        () => {},
-        error => { console.log(error) }
-    );
     
     useEffect(() => {
         createTable();
@@ -47,7 +48,7 @@ export default function Today() {
     }
 
     return (
-        <View >
+        <View style={styles.new}>
             <View style={{justifyContent: 'center'}}> 
                 <Text>Title:</Text>
                 <TextInput
@@ -68,8 +69,20 @@ export default function Today() {
             <View style={{marginTop: 40}}>
                 <Button title="Save" onPress={setData}></Button>
             </View>
+            <View>
+                <Text>{title}</Text>
+                <Text>{date}</Text>
+                <Text>{time}</Text>
+            </View>
         </View>
     );
 }
 
-
+const styles = StyleSheet.create({
+    new: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#1aa'
+    }
+});
