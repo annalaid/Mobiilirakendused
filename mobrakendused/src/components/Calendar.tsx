@@ -15,22 +15,24 @@ type Day = {
 const entryList: Entry[] = [
     {
         title: "Kristjan Jõekalda Loto kolmapäev",
-        time: new Date("2022.05.07 19:00")
+        time: new Date(2022, 4, 7, 19, 0)
     },
     {
         title: "Homework: Inglisekeele ül. 1",
-        time: new Date("2022.05.07"),
+        time: new Date(2055, 4, 7),
         allDay: true
     },
     {
         title: "Kokkusaamine Teet Kääpaga",
-        time: new Date("2022.05.11 16:15")
+        time: new Date(2022, 4, 11, 16, 15)
     },
     {
         title: "Homework: Inglisekeele ül. 2",
-        time: new Date("2022.05.12 16:15")
+        time: new Date(2022, 4, 12, 16, 15)
     }
 ];
+
+console.log(entryList);
 
 export default function Calender() {
     const [currentDate, setCurrentDate] = useState(new Date());
