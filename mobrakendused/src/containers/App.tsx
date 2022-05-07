@@ -1,22 +1,19 @@
 import React from 'react';
-import { View, StyleSheet, SafeAreaView } from 'react-native';
-import Footer from '../components/Footer';
-import Header from '../components/Header';
-import UserSettings from '../components/UserSettings';
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom"
+import Calendar from '../components/Calendar';
+import Today from '../components/Today';
+import Navbar from '../components/navbar';
+
 
 function App() {
   return (
-    <SafeAreaView>
-      <UserSettings />
-    </SafeAreaView>
+    <Router>
+      <Routes>
+        <Route path='/Calendar' element={<Calendar />} />
+        <Route path='/Today' element={<Today />} />
+      </Routes>
+      <Navbar />
+    </Router>
   );
 }
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#adecf4',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
 export default App;

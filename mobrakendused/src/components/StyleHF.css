@@ -1,16 +1,27 @@
-footer {
+body {
+    background-color: #808080;
+}
+.navbar {
     position: absolute;
     bottom: 0;
     width: 100%;
-    height: 60px;
-    /* Height of the footer */
-    background: #6cf;
+    height: 80px;
+    display: flex;
+}
+li {
+    list-style: none;
+    width: 100%;
+    background-color: #006bb3;
+    text-align: center;
+    padding-top: 20px;
+}
+li a {
+    color: white;
+    text-decoration: none;
+    font: 36px Roboto;
+
 }
 
-header {
-    position: absolute;
-    top: 0;
-    width: 100%;
-    height: 70px;
-    background: #6cf;
+li:active, li:hover {
+    background-color: #004d80;
 }
