@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, StyleSheet, Text, View } from 'react-native';
+import { Button, StyleSheet, Text, View, ScrollView } from 'react-native';
 import './StyleHF.css';
 import Entry from '../types/Entry';
 
@@ -77,7 +77,7 @@ export default function Calender() {
                 </View>
             </View>
             
-            <View style={styles.dayList}>
+            <ScrollView style={styles.dayList}>
                 {dayList.map(day =>
                 <View style={styles.day}>
                     <View style={styles.dayEntryList}>
@@ -98,7 +98,7 @@ export default function Calender() {
                     </View>
                 </View>
                 )}
-            </View>
+            </ScrollView>
         </View>
     );
 }
@@ -110,19 +110,20 @@ let colorText = "#ccc"
 const styles = StyleSheet.create({
     overhead: {
         flexDirection: "column",
-        backgroundColor: colorMain        
+        backgroundColor: colorMain,
+        marginBottom: "80px"
     },
     dayList: {
         flexDirection: "column",
         paddingBottom: "0.25em",        
-        backgroundColor: colorText
+        backgroundColor: colorText,        
     },
     day: {        
         flexDirection: "row",
         marginTop: "0.25em",        
     },
     dayEntryList: {
-        flex: 9,
+        flex: 8,
         flexDirection: "column",
         backgroundColor: colorSecond
     },
@@ -130,7 +131,7 @@ const styles = StyleSheet.create({
         marginVertical: "0.25em"
     },
     dayInfo: {
-        flex: 3,
+        flex: 4,
         flexDirection: "column",
         marginLeft: "0.25em",
         backgroundColor: colorSecond
@@ -139,17 +140,17 @@ const styles = StyleSheet.create({
         paddingHorizontal: "1em",
         marginVertical: "0.25em",
         color: colorText,
-        fontSize: 24
+        fontSize: 16
     },
     titleList: {
         flexDirection: "row",
         paddingVertical: "1em",
     },
     titleText: {
-        flex: 9,
+        flex: 8,
     },
     titleButton: {
-        flex: 3,    
+        flex: 4,    
         marginVertical: "0.25em",        
     }
 });
