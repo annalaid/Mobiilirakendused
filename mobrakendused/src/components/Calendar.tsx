@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Button, StyleSheet, Text, View, ScrollView } from 'react-native';
 import './StyleHF.css';
 import Entry from '../types/Entry';
+import { enablePromise, openDatabase, SQLiteDatabase } from 'react-native-sqlite-storage';
 
 type Day = {
     entryList: Entry[],
@@ -12,32 +13,67 @@ type Day = {
     TODO This list should come from data storage, for now its hardcoded
 */
 
-const entryList: Entry[] = [
+const initEntryList: Entry[] = [
     {
+        id: 1,
         title: "Kristjan Jõekalda Loto kolmapäev",
-        time: new Date(2022, 4, 7, 19, 0)
+        time: new Date("2022-05-07 19:00")
     },
     {
+        id: 2,
         title: "Homework: Inglisekeele ül. 1",
-        time: new Date(2055, 4, 7),
+        time: new Date("2022-05-07"),
         allDay: true
     },
     {
+        id: 3,
         title: "Kokkusaamine Teet Kääpaga",
-        time: new Date(2022, 4, 11, 16, 15)
+        time: new Date("2022-05-11 16:15")
     },
     {
+        id: 4,
         title: "Homework: Inglisekeele ül. 2",
-        time: new Date(2022, 4, 12, 16, 15)
+        time: new Date("2022-05-12 16:15")
     }
 ];
 
-console.log(entryList);
+
 
 export default function Calender() {
     const [currentDate, setCurrentDate] = useState(new Date());
-
     const [dayList, setDayList] = useState<Day[]>([]);
+    const [entryList, setEntryList] = useState<Entry[]>([]);
+
+    // see üks rida jooksutab kogu asja kokku (??????)
+    openDatabase({ name: 'data.db', location: 'default' });
+
+    /*getDBConnection().then(db => {
+        createTable(db).then(() => {
+            getEntries(db).then(storedEntries => {
+                
+            })
+        })
+    })*/
+
+    /*const loadDataCallback = useCallback(async () => {
+        try {          
+          const db = await getDBConnection();
+          await createTable(db);
+          const storedTodoItems = await getEntries(db);
+          if (storedTodoItems.length) {
+            setEntryList(storedTodoItems);
+          } else {
+            await saveEntries(db, initEntryList);
+            setEntryList(initEntryList);
+          }
+        } catch (error) {
+          console.error(error);
+        }
+      }, []);
+
+      useEffect(() => {
+        loadDataCallback();
+      }, [loadDataCallback]);*/
 
     /*
     construct a displayable list out of entryList
@@ -66,11 +102,14 @@ export default function Calender() {
                     d.getMonth() === e.getMonth() &&
                     d.getDate() === e.getDate()) {
                     day.entryList.push(entry)
+                    
                 }
             });
         });
 
         setDayList(dayList);
+
+        console.log(entryList)
     }, [currentDate]);
 
 
