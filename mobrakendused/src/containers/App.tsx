@@ -3,11 +3,12 @@ import { View, StyleSheet, SafeAreaView } from 'react-native';
 import Footer from '../components/Footer';
 import Header from '../components/Header';
 import UserSettings from '../components/UserSettings';
+import Calender  from '../components/Calendar';
 
 function App() {
   return (
     <SafeAreaView>
-      <UserSettings />
+      <Calender />
     </SafeAreaView>
   );
 }
