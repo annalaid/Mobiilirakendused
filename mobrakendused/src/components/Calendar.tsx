@@ -2,50 +2,72 @@ import React, { useState, useEffect } from 'react';
 import { Button, StyleSheet, Text, View, ScrollView } from 'react-native';
 import './StyleHF.css';
 import Entry from '../types/Entry';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
+
+type myType = {Title: string, Date: string, Time: string};
 type Day = {
     entryList: Entry[],
     time: Date
 };
 
-/*
-    TODO This list should come from data storage, for now its hardcoded
-*/
-
-const entryList: Entry[] = [
-    {
-        title: "Kristjan Jõekalda Loto kolmapäev",
-        time: new Date(2022, 4, 7, 19, 0)
-    },
-    {
-        title: "Homework: Inglisekeele ül. 1",
-        time: new Date(2055, 4, 7),
-        allDay: true
-    },
-    {
-        title: "Kokkusaamine Teet Kääpaga",
-        time: new Date(2022, 4, 11, 16, 15)
-    },
-    {
-        title: "Homework: Inglisekeele ül. 2",
-        time: new Date(2022, 4, 12, 16, 15)
-    }
-];
-
-console.log(entryList);
+const entryList: Entry[] = [];
 
 export default function Calender() {
     const [currentDate, setCurrentDate] = useState(new Date());
-
     const [dayList, setDayList] = useState<Day[]>([]);
-
+    
+    const [mehh, setMehh] = useState<myType[] | null>(null);
+    const [key, setCount] = useState(0);
+    const [isLoading, setIsLoading] = useState(true);
     /*
     construct a displayable list out of entryList
     */
+    const importData = async () => {
+        const keyArray: any[] = [];
+        const dataArray: myType[] = [];
+        try {
+            const keys:any = await AsyncStorage.getAllKeys()
+            keys.forEach(async (element: string) => {
+                    // correct data is sorted out by the "id" substring at the front of the keys
+                    if(element.substring(0,2)==="id"){
+                        keyArray.push(element);
+                        let data = await AsyncStorage.getItem(element);
+                        //console.log(data);
+                        let Data: myType = JSON.parse(data || '{}');
+                        //console.log(data);
+                        dataArray.push(Data);
+                        setCount(key + 1);
+                        //console.log(key)
+                    }
+                }
+            );
+
+            setMehh(dataArray);
+        } catch (error){
+            console.log(error)
+        }
+    } 
 
     useEffect(() => {
         let dayList: Day[] = [];
 
+        importData();
+
+        try {
+            mehh.forEach(entry => {
+                entryList.push(
+                    {
+                    title: entry.Title,
+                    time: new Date(entry.Date)
+                }
+                )
+            })
+        } catch (err) {
+            console.log(err);
+        }
+         
+        
         // 1/2 pre-populating is necessary to only show tasks of the current week
         for (let i = 1; i < 8; i++) {
             const date = new Date(currentDate);
@@ -70,10 +92,18 @@ export default function Calender() {
             });
         });
 
+        
+
         setDayList(dayList);
-    }, [currentDate]);
 
-
+        
+        setTimeout(() => {
+            setIsLoading(false);
+          }, 1000);
+    }, [currentDate, entryList]);
+    
+    
+    console.log(mehh)
 
     let addDaysToCurrentDate = (days: number) => {
         let date = new Date(currentDate);
@@ -82,17 +112,22 @@ export default function Calender() {
     }
 
     let onPressPreviousWeek = () => {
+        entryList.splice(0, entryList.length);      // Prevents stacking of data
         addDaysToCurrentDate(-7);
     }
 
     let onPressNextWeek = () => {
+        entryList.splice(0, entryList.length);
         addDaysToCurrentDate(7);
     }
 
     let onPressCurrentWeek = () => {
+        entryList.splice(0, entryList.length);
         setCurrentDate(new Date());
     }
-
+    if (isLoading) {
+        return (<></>)
+    } else {
     return (
         <View style={styles.overhead}>
             <View style={styles.titleList}>
@@ -149,6 +184,7 @@ export default function Calender() {
             </ScrollView>
         </View>
     );
+    }
 }
 
 let colorMain = "#06c"
