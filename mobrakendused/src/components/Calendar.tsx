@@ -17,39 +17,37 @@ export default function Calender() {
     const [currentDate, setCurrentDate] = useState(new Date());
     const [dayList, setDayList] = useState<Day[]>([]);
     
-    const [mehh, setMehh] = useState<myType[] | null>(null);
-    const [key, setCount] = useState(0);
+    const [mehh, setMehh] = useState<myType[] | null>([]);
     const [isLoading, setIsLoading] = useState(true);
     /*
     construct a displayable list out of entryList
     */
-    const importData = async () => {
-        const keyArray: any[] = [];
-        const dataArray: myType[] = [];
-        try {
-            const keys:any = await AsyncStorage.getAllKeys()
-            keys.forEach(async (element: string) => {
-                    // correct data is sorted out by the "id" substring at the front of the keys
-                    if(element.substring(0,2)==="id"){
-                        keyArray.push(element);
-                        let data = await AsyncStorage.getItem(element);
-                        //console.log(data);
-                        let Data: myType = JSON.parse(data || '{}');
-                        //console.log(data);
-                        dataArray.push(Data);
-                        setCount(key + 1);
-                        //console.log(key)
-                    }
-                }
-            );
-
-            setMehh(dataArray);
-        } catch (error){
-            console.log(error)
-        }
-    } 
+    
 
     useEffect(() => {
+        const importData = async () => {
+            const keyArray: any[] = [];
+            const dataArray: myType[] = [];
+            try {
+                const keys:any = await AsyncStorage.getAllKeys()
+                keys.forEach(async (element: string) => {
+                        // correct data is sorted out by the "id" substring at the front of the keys
+                        if(element.substring(0,2)==="id"){
+                            keyArray.push(element);
+                            let data = await AsyncStorage.getItem(element);
+                            let Data: myType = JSON.parse(data || '{}');
+                            dataArray.push(Data);
+                        }
+                        setIsLoading(false);
+                    }
+                );
+    
+                setMehh(dataArray);
+            } catch (error){
+                console.log(error)
+            }
+        } 
+
         let dayList: Day[] = [];
 
         importData();
@@ -95,15 +93,8 @@ export default function Calender() {
         
 
         setDayList(dayList);
-
-        
-        setTimeout(() => {
-            setIsLoading(false);
-          }, 1000);
     }, [currentDate, entryList]);
     
-    
-    console.log(mehh)
 
     let addDaysToCurrentDate = (days: number) => {
         let date = new Date(currentDate);

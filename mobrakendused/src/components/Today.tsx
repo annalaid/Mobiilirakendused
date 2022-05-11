@@ -1,18 +1,16 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import './StyleHF.css';
 import Entry from '../types/Entry'
 import { ScrollView, View, Text, StyleSheet } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+type myType = {Title: string, Date: string, Time: string};
 
 const Today = () => {
-    let entries: Entry[] = [
-        {title: "Homework: Inglisekeele ül. 1",
-         time: new Date("2022.05.07"),
-         allDay: true       
-        },
-        {title: "Kristjan Jõekalda Loto kolmapäev",
-        time: new Date("2022.05.07 19:00")   
-        }
-    ];
+    const [mehh, setMehh] = useState<myType[] | null>([]);
+    const [entries, setEntries] = useState<Entry[] | null>();
+    const [isLoading, setIsLoading] = useState(true);
+    const [count, setCount] = useState(0);
     
     const formatMinutes = (minutes: number) => {
         if(minutes < 10){
@@ -21,45 +19,96 @@ const Today = () => {
             return minutes
         }
     }
+    useEffect(()=>{
 
-    return(
+        let entryList: Entry[] = [];
+        const importData = async () => {
+        const keyArray: any[] = [];
+        const dataArray: myType[] = [];
+        try {
+            const keys:any = await AsyncStorage.getAllKeys()
+            keys.forEach(async (element: string) => {
+                    // correct data is sorted out by the "id" substring at the front of the keys
+                    if(element.substring(0,2)==="id"){
+                        keyArray.push(element);
+                        let data = await AsyncStorage.getItem(element);
+                        let Data: myType = JSON.parse(data || '{}');
+                        dataArray.push(Data);
+                        console.log(dataArray.length)
+                    }
+                }
+            );
+            setMehh(dataArray);
 
-        <View style={styles.overhead}>
-            <View style={styles.titleList}>
-                <View style={styles.titleTitle}>
-                    <Text style={styles.titleText}>Entry:</Text>
-                    <Text style={styles.titleText}>{new Date().toLocaleDateString("et-EE", { })}</Text>
-                    <Text style={styles.titleText}>Time:</Text>
+            
+        } catch (error){
+            console.log(error)
+        }
+    } 
+    
+        importData();
+
+        try {
+            console.log(mehh)
+            mehh.forEach(entry => {
+                console.log(entry)
+                entryList.push(
+                    {
+                    title: entry.Title,
+                    time: new Date(entry.Date)
+                }
+                )
+            })
+            setEntries(entryList);
+            setIsLoading(false);
+            console.log(entries)
+
+            
+        } catch (err) {
+            console.log(err);
+        }
+    },[count]);
+    
+    if(isLoading) {
+        return (<></>)
+    } else {
+        return(
+            <View style={styles.overhead}>
+                <View style={styles.titleList}>
+                    <View style={styles.titleTitle}>
+                        <Text style={styles.titleText}>Entry:</Text>
+                        <Text style={styles.titleText}>{new Date().toLocaleDateString("et-EE", { })}</Text>
+                        <Text style={styles.titleText}>Time:</Text>
+                    </View>
+                    
                 </View>
+                <ScrollView style={styles.dayList}>
+                    <View></View>
+                    {entries.map((item,index) => 
+                        <View style={styles.day} key={index}>
+                            <View style={styles.dayEntryList}>
+                                <View style={styles.entry}>
+                                    <Text style={styles.text}>
+                                        {item.title}
+                                    </Text>
+                                </View>
 
-            </View>
-            <ScrollView style={styles.dayList}>
-                <View></View>
-                {entries.map((item,index) => 
-                    <View style={styles.day} key={index}>
-                        <View style={styles.dayEntryList}>
-                            <View style={styles.entry}>
-                                <Text style={styles.text}>
-                                    {item.title}
-                                </Text>
                             </View>
 
+                            <View style={styles.dayInfo}>
+                                {!item.allDay ? 
+                                <Text style={styles.text}>{item.time.getHours()+ ":" + formatMinutes(item.time.getMinutes()) }</Text> : 
+                                <Text style={styles.text}>All day</Text>
+                                }
+                            </View>
                         </View>
 
-                        <View style={styles.dayInfo}>
-                            {!item.allDay ? 
-                            <Text style={styles.text}>{item.time.getHours()+ ":" + formatMinutes(item.time.getMinutes()) }</Text> : 
-                            <Text style={styles.text}>All day</Text>
-                            }
-                        </View>
-                    </View>
-
-                )}
-
-            </ScrollView>
-        </View>
-
-    )
+                    )}
+                    
+                </ScrollView>
+            </View>
+        ) 
+    }
 }
 export default Today;
 
