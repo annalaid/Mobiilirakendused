@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Button, StyleSheet, Text, View, ScrollView } from 'react-native';
+import { useNavigate  } from "react-router-dom";
 import './StyleHF.css';
 import Entry from '../types/Entry';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
-type myType = {Title: string, Date: string, Time: string};
+type importType = {Title: string, Date: string, Time: string};
 type Day = {
     entryList: Entry[],
     time: Date
@@ -16,55 +17,61 @@ const entryList: Entry[] = [];
 export default function Calender() {
     const [currentDate, setCurrentDate] = useState(new Date());
     const [dayList, setDayList] = useState<Day[]>([]);
-    
-    const [mehh, setMehh] = useState<myType[] | null>([]);
+    const [Storage, setStorage] = useState<importType[] | null>([]);
     const [isLoading, setIsLoading] = useState(true);
-    /*
-    construct a displayable list out of entryList
-    */
-    
+    const navigate = useNavigate();
 
-    useEffect(() => {
-        const importData = async () => {
-            const keyArray: any[] = [];
-            const dataArray: myType[] = [];
-            try {
-                const keys:any = await AsyncStorage.getAllKeys()
-                keys.forEach(async (element: string) => {
-                        // correct data is sorted out by the "id" substring at the front of the keys
-                        if(element.substring(0,2)==="id"){
-                            keyArray.push(element);
-                            let data = await AsyncStorage.getItem(element);
-                            let Data: myType = JSON.parse(data || '{}');
-                            dataArray.push(Data);
+    const handleNew = ()=> {
+        navigate('/New');
+    }
+    
+    // 1. useEffect for importing data from device storage
+    useEffect(()=>{
+    const importData = async () => {
+            entryList.splice(0, entryList.length);      // Prevents stacking of data
+                const keyArray: any[] = [];
+                const dataArray: importType[] = [];
+                try {
+                    const keys:any = await AsyncStorage.getAllKeys()
+                    keys.forEach(async (element: string) => {
+                            // correct data is sorted out by the "id" substring at the front of the keys
+                            if(element.substring(0,2)==="id"){
+                                keyArray.push(element);
+                                let data = await AsyncStorage.getItem(element);
+                                let Data: importType = JSON.parse(data || '{}');
+                                dataArray.push(Data);
+                            }
+                            
                         }
-                        setIsLoading(false);
-                    }
-                );
-    
-                setMehh(dataArray);
-            } catch (error){
-                console.log(error)
-            }
-        } 
-
-        let dayList: Day[] = [];
-
-        importData();
-
-        try {
-            mehh.forEach(entry => {
-                entryList.push(
-                    {
-                    title: entry.Title,
-                    time: new Date(entry.Date)
+                    );
+                    setStorage(dataArray);
+                } catch (error){
+                    console.log(error)
                 }
-                )
-            })
-        } catch (err) {
-            console.log(err);
-        }
-         
+            } 
+
+            importData();
+
+            
+    },[])
+
+    // 2. useEffect for processing data
+    useEffect(() => {
+        // Importing stored data into the entryList array
+        try {
+                Storage.forEach(entry => {
+                    entryList.push(
+                        {
+                        title: entry.Title,
+                        time: new Date(entry.Date)
+                    }
+                    )
+                })
+            } catch (err) {
+                console.log(err);
+            }
+
+         let dayList: Day[] = [];
         
         // 1/2 pre-populating is necessary to only show tasks of the current week
         for (let i = 1; i < 8; i++) {
@@ -90,10 +97,9 @@ export default function Calender() {
             });
         });
 
-        
-
         setDayList(dayList);
-    }, [currentDate, entryList]);
+        setIsLoading(false);
+    }, [currentDate, entryList, Storage]);
     
 
     let addDaysToCurrentDate = (days: number) => {
@@ -128,8 +134,7 @@ export default function Calender() {
                     </Text>
                 </View>
                 <View style={styles.titleButton}>
-                    <Button title={"uus kirje"} >
-
+                    <Button title={"uus kirje"} onPress={handleNew}>
                     </Button>
                 </View>
             </View>

@@ -4,13 +4,12 @@ import Entry from '../types/Entry'
 import { ScrollView, View, Text, StyleSheet } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-type myType = {Title: string, Date: string, Time: string};
+type importType = {Title: string, Date: string, Time: string, allDay: boolean};
 
 const Today = () => {
-    const [mehh, setMehh] = useState<myType[] | null>([]);
+    const [Storage, setStorage] = useState<importType[] | null>([]);
     const [entries, setEntries] = useState<Entry[] | null>();
     const [isLoading, setIsLoading] = useState(true);
-    const [count, setCount] = useState(0);
     
     const formatMinutes = (minutes: number) => {
         if(minutes < 10){
@@ -20,54 +19,56 @@ const Today = () => {
         }
     }
     useEffect(()=>{
-
-        let entryList: Entry[] = [];
         const importData = async () => {
-        const keyArray: any[] = [];
-        const dataArray: myType[] = [];
-        try {
-            const keys:any = await AsyncStorage.getAllKeys()
-            keys.forEach(async (element: string) => {
-                    // correct data is sorted out by the "id" substring at the front of the keys
-                    if(element.substring(0,2)==="id"){
-                        keyArray.push(element);
-                        let data = await AsyncStorage.getItem(element);
-                        let Data: myType = JSON.parse(data || '{}');
-                        dataArray.push(Data);
-                        console.log(dataArray.length)
-                    }
-                }
-            );
-            setMehh(dataArray);
+                const keyArray: any[] = [];
+                const dataArray: importType[] = [];
+                try {
+                    const keys:any = await AsyncStorage.getAllKeys()
+                    keys.forEach(async (element: string) => {
+                            // correct data is sorted out by the "id" substring at the front of the keys
+                            if(element.substring(0,2)==="id"){
+                                keyArray.push(element);
+                                let data = await AsyncStorage.getItem(element);
+                                let Data: importType = JSON.parse(data || '{}');
+                                dataArray.push(Data);
+                            }
+                        }
+                    );
+                    setStorage(dataArray);
 
-            
-        } catch (error){
-            console.log(error)
-        }
-    } 
-    
+                    
+                } catch (error){
+                    console.log(error)
+                }
+            } 
+        
         importData();
-
+    },[])
+    useEffect(()=>{
+        let entryList: Entry[] = [];
+        let dateToday: any = new Date()
+        dateToday = new Date(dateToday.getFullYear(), dateToday.getMonth(), dateToday.getDate());
         try {
-            console.log(mehh)
-            mehh.forEach(entry => {
-                console.log(entry)
-                entryList.push(
-                    {
-                    title: entry.Title,
-                    time: new Date(entry.Date)
+            Storage.forEach(entry => {
+                let entryDate:any = entry.Date + " " + entry.Time
+                entryDate = new Date(entryDate);
+                if( entryDate.getDate() === dateToday.getDate() && entryDate.getMonth() === dateToday.getMonth() && entryDate.getFullYear() === dateToday.getFullYear() ){
+                    entryList.push(
+                        {
+                        title: entry.Title,
+                        time: new Date(entryDate),
+                        allDay: entry.allDay
+                        }
+                    )
                 }
-                )
+                
             })
             setEntries(entryList);
             setIsLoading(false);
-            console.log(entries)
-
-            
         } catch (err) {
             console.log(err);
         }
-    },[count]);
+    },[Storage]);
     
     if(isLoading) {
         return (<></>)
