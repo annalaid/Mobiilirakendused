@@ -17,7 +17,7 @@ const entryList: Entry[] = [];
 export default function Calender() {
     const [currentDate, setCurrentDate] = useState(new Date());
     const [dayList, setDayList] = useState<Day[]>([]);
-    const [Storage, setStorage] = useState<importType[] | null>([]);
+    const [storage, setStorage] = useState<importType[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const navigate = useNavigate();
 
@@ -59,7 +59,7 @@ export default function Calender() {
     useEffect(() => {
         // Importing stored data into the entryList array
         try {
-                Storage.forEach(entry => {
+                storage.forEach(entry => {
                     entryList.push(
                         {
                         title: entry.Title,
@@ -99,7 +99,7 @@ export default function Calender() {
 
         setDayList(dayList);
         setIsLoading(false);
-    }, [currentDate, entryList, Storage]);
+    }, [currentDate, entryList, storage]);
     
 
     let addDaysToCurrentDate = (days: number) => {

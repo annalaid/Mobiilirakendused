@@ -7,8 +7,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 type importType = {Title: string, Date: string, Time: string, allDay: boolean};
 
 const Today = () => {
-    const [Storage, setStorage] = useState<importType[] | null>([]);
-    const [entries, setEntries] = useState<Entry[] | null>();
+    const [storage, setStorage] = useState<importType[]>([]);
+    const [entries, setEntries] = useState<Entry[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     
     const formatMinutes = (minutes: number) => {
@@ -49,7 +49,7 @@ const Today = () => {
         let dateToday: any = new Date()
         dateToday = new Date(dateToday.getFullYear(), dateToday.getMonth(), dateToday.getDate());
         try {
-            Storage.forEach(entry => {
+            storage.forEach(entry => {
                 let entryDate:any = entry.Date + " " + entry.Time
                 entryDate = new Date(entryDate);
                 if( entryDate.getDate() === dateToday.getDate() && entryDate.getMonth() === dateToday.getMonth() && entryDate.getFullYear() === dateToday.getFullYear() ){
@@ -68,7 +68,7 @@ const Today = () => {
         } catch (err) {
             console.log(err);
         }
-    },[Storage]);
+    },[storage]);
     
     if(isLoading) {
         return (<></>)
