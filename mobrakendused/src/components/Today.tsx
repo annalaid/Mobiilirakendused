@@ -50,8 +50,14 @@ const Today = () => {
         dateToday = new Date(dateToday.getFullYear(), dateToday.getMonth(), dateToday.getDate());
         try {
             storage.forEach(entry => {
-                let entryDate: any = entry.Date + " " + entry.Time
-                entryDate = new Date(entryDate);
+                let entryDate;
+                if (entry.Time !== undefined) {
+                    entryDate = new Date(entry.Date + " " + entry.Time);
+                }
+                else {
+                    entryDate = new Date(entry.Date);
+                }
+                
                 if (entryDate.getDate() === dateToday.getDate() && entryDate.getMonth() === dateToday.getMonth() && entryDate.getFullYear() === dateToday.getFullYear()) {
                     entryList.push(
                         {
@@ -61,7 +67,6 @@ const Today = () => {
                         }
                     )
                 }
-
             })
             setEntries(entryList);
             setIsLoading(false);
