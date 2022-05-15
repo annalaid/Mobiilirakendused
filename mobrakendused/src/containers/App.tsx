@@ -11,8 +11,8 @@ import Logo from '../components/logo'
 function App() {
   return (
     <Router>
-      <Logo/>
       <Routes>
+        <Route path='/' element={<Logo />} />
         <Route path='/Calendar' element={<Calendar />} />
         <Route path='/Today' element={<Today />} />
         <Route path='/New' element={<New />} />

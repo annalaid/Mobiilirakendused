@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useState } from 'react';
-import { StyleSheet, Text, View, TextInput, Button } from 'react-native';
+import { Text, View, TextInput, Button } from 'react-native';
 import { useNavigate } from "react-router-dom";
 import styles from "./styles";
 
@@ -97,52 +97,5 @@ export default function New() {
                 <Text style={{ fontSize: 16, color: "#e51a3b" }}>{error}</Text>
             </View>
         </View>
-        /*<View style={styles.new}>
-            <View>
-                <View style={styles.attribute}>
-                    <Text>Title:</Text>
-                    <TextInput
-                        placeholder='Title'
-                        onChangeText={titleValue => setTitle(titleValue)}
-                    ></TextInput>
-                </View>
-                <View style={styles.attribute}>
-                    <Text style={styles.text}>Date:</Text>
-                    <input type="date" value={date} onChange={dateValue => { setDate(dateValue.target.value) }}></input>
-                </View>
-                <View style={[{ flexDirection: "row" }, styles.attribute]}>
-                    <View style={{ flex: 1 }}>
-                        <Text style={styles.text}>All day:</Text>
-                    </View>
-                    <View style={{ flex: 1 }}>
-                        <input type="checkbox" onChange={handleChange} />
-                    </View>
-                </View>
-                <View style={styles.attribute}>
-                    {!allDay ? timeContainer : null}
-                </View>                
-            </View>
-
-            <View style={{ marginTop: 40 }}>
-                <Button title="Save" onPress={saveStorage}></Button>
-            </View>
-            <Text style={{ fontSize: 16, color: "#e51a3b" }}>{error}</Text>
-        </View>*/
     );
 }
-
-/*
-const styles = StyleSheet.create({
-    new: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: colorSecond
-    },
-    attribute: {
-
-    },
-    text: {
-
-    }
-});*/

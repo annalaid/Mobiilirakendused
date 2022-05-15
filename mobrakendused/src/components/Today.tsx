@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Entry from '../types/Entry'
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import styles from './styles';
 
@@ -11,7 +11,7 @@ const Today = () => {
     const [entries, setEntries] = useState<Entry[]>([]);
     const [isLoading, setIsLoading] = useState(true);
 
-    const formatMinutes = (minutes: number) => {
+    const formatMinutes = (minutes: number) => {        // Formatting the minute addition so single values would have a zero before them
         if (minutes < 10) {
             return "0" + minutes
         } else {
@@ -19,7 +19,7 @@ const Today = () => {
         }
     }
     useEffect(() => {
-        const importData = async () => {
+        const importData = async () => {                // Implementing AsyncStorage
             const keyArray: any[] = [];
             const dataArray: importType[] = [];
             try {
@@ -44,7 +44,7 @@ const Today = () => {
 
         importData();
     }, [])
-    useEffect(() => {
+    useEffect(() => {           // Saving the Date & Time
         let entryList: Entry[] = [];
         let dateToday: any = new Date()
         dateToday = new Date(dateToday.getFullYear(), dateToday.getMonth(), dateToday.getDate());

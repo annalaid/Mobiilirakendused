@@ -5,7 +5,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 export default function UserSettings() {
     const [text, setText] = useState<any | null>(null);
 
-    const saveName = async () => {
+    const saveName = async () => {  // Implementing AsyncStorage to save the Name of the Calendar entry
         try {
             AsyncStorage.setItem("appData", text)
         } catch (err) {
@@ -13,7 +13,7 @@ export default function UserSettings() {
         }
     }
 
-    const getName = async () => {
+    const getName = async () => {  // Getting the name of the Calendar entry
         try {
             const name = await AsyncStorage.getItem("appData");
             setText(name);

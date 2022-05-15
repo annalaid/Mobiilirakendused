@@ -6,10 +6,6 @@ const colorSecond = "#eee";
 const colorSecondHighlight = "#ddd";
 
 const colorMainText = colorSecond;
-/*const colorSecondText = "000";
-<-- unused values -->
-const colorInfo = "#bbb";
-const colorInfoText = colorSecondText;*/
 
 const navbarHeight = "80px";
 
@@ -17,6 +13,7 @@ const titleMargin = "1em";
 
 
 export default StyleSheet.create({
+  /* Navigation bar: */ 
   navbar: {
     position: "fixed",
     bottom: 0,
@@ -44,6 +41,7 @@ export default StyleSheet.create({
     fontSize: 24,
 
   },
+  /* Calendar styles: */ 
 
   calendarWrapper: {
     flexDirection: "column",
@@ -107,11 +105,6 @@ export default StyleSheet.create({
   newAttributeHighlight: {
     backgroundColor: colorSecondHighlight
   },
-
-  img: {
-    top: '100px',
-    left: '100px'
-  }
   /*
   day: {
     flexDirection: "row",
