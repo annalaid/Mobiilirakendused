@@ -23,7 +23,7 @@ React Native with Typescript: https://www.section.io/engineering-education/build
 * Stiilide lisamine
 
 ### Raske oli:
-* Kõige keerulisemaks osutus andmekogumine, kasutasime AsyncStorage-it ja selle korralikult tööle saamine osutus keerulisemaks, kui esialgu arvasime.
+* Kõige keerulisemaks osutus andmete hoiustamine, tahtsime alguses kasutada React Native Sql Storage, aga selle korralikult tööle saamine osutus keerulisemaks, kui esialgu arvasime, suuresti, kuna teek kasutas omakorda iganenud ja vähestes seadmetest töötavaid teeke. Lõpuks kasutasime hoopis AsyncStorage.
 
 #### Rakenduse loomine ja koostöö sujus meil hästi, leidsime koos aega rakenduse loomiseks ja ühtegi lakheli meil ei tekkinud
 
