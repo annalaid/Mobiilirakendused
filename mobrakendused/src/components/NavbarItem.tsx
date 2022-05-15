@@ -8,7 +8,7 @@ type NavbarItemProps = {
   text: string
 }
 
-const NavbarItem = (props: NavbarItemProps) => {
+const NavbarItem = (props: NavbarItemProps) => { // Creating the navbar item
   const pathName = useLocation().pathname;
 
   return (
