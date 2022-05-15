@@ -8,7 +8,6 @@ Luua rakendus, kus saab kuvada kalendrisse lisatud taske, lisada taske juurde ni
 
 ## Paigaldus:
 React Native with Typescript: https://www.section.io/engineering-education/building-a-react-app-with-typescript/
-Lisaks on ka valmisrakenduse zip fail, mille saab käima panna kasutades terminalis "npm start". (Arvutis peab olema installitud Node)
 
 ### Rakenduse jooksutamiseks:
 * Terminalis liikuda kausta mobrakendused
