@@ -6,10 +6,10 @@ const colorSecond = "#eee";
 const colorSecondHighlight = "#ddd";
 
 const colorMainText = colorSecond;
-const colorSecondText = "000";
-
+/*const colorSecondText = "000";
+<-- unused values -->
 const colorInfo = "#bbb";
-const colorInfoText = colorSecondText;
+const colorInfoText = colorSecondText;*/
 
 const navbarHeight = "80px";
 
@@ -106,6 +106,11 @@ export default StyleSheet.create({
   },
   newAttributeHighlight: {
     backgroundColor: colorSecondHighlight
+  },
+
+  img: {
+    top: '100px',
+    left: '100px'
   }
   /*
   day: {

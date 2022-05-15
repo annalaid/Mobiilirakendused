@@ -1,6 +1,5 @@
 import React from 'react';
-import { TouchableHighlight, View, Text } from 'react-native';
-import { Link } from "react-router-dom";
+import { View } from 'react-native';
 import NavbarItem from "./NavbarItem";
 import styles from "./styles";
 
