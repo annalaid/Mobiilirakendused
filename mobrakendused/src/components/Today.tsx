@@ -18,6 +18,8 @@ const Today = () => {
             return minutes
         }
     }
+
+    // 1. useEffect for importing data from device storage
     useEffect(() => {
         const importData = async () => {                // Implementing AsyncStorage
             const keyArray: any[] = [];
@@ -44,11 +46,14 @@ const Today = () => {
 
         importData();
     }, [])
-    useEffect(() => {           // Saving the Date & Time
+    // 2. useEffect for processing data
+    useEffect(() => {
+
         let entryList: Entry[] = [];
         let dateToday: any = new Date()
         dateToday = new Date(dateToday.getFullYear(), dateToday.getMonth(), dateToday.getDate());
-        try {
+        // Converting to the correct formats and filtering out entries for current date
+        try {                         
             storage.forEach(entry => {
                 let entryDate;
                 if (entry.Time !== undefined) {

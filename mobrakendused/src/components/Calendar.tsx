@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Button, Text, View } from 'react-native';
-import { useNavigate } from "react-router-dom";
 import Entry from '../types/Entry';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import styles from './styles';
@@ -19,11 +18,6 @@ export default function Calender() {
     const [dayList, setDayList] = useState<Day[]>([]);
     const [storage, setStorage] = useState<importType[]>([]);
     const [isLoading, setIsLoading] = useState(true);
-    const navigate = useNavigate();
-
-    const handleNew = () => {
-        navigate('/New');
-    }
 
     // 1. useEffect for importing data from device storage
     useEffect(() => {
@@ -101,7 +95,7 @@ export default function Calender() {
         setIsLoading(false);
     }, [currentDate, entryList, storage]);
 
-
+    // Traversing weeks:
     let addDaysToCurrentDate = (days: number) => {
         let date = new Date(currentDate);
         date.setDate(date.getDate() + days);

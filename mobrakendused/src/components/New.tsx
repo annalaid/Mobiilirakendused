@@ -12,6 +12,7 @@ export default function New() {
     const [error, setError] = useState<string | null>();
     const navigate = useNavigate();
 
+
     const setItemStorage = async (key: string, value: any) => {         // Data is saved into storage via randomly generated key
         try {
             await AsyncStorage.setItem(key, JSON.stringify(value));
@@ -20,6 +21,7 @@ export default function New() {
         }
     }
 
+    // For toggling the time input when checkbox is on or off
     const handleChange = () => {
         allDay ? setAllDay(false) : setAllDay(true);
     };
